@@ -1,0 +1,6 @@
+/*
+ * serverSalariesThread.c
+ *
+ */
+
+
