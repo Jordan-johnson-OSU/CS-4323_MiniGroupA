@@ -11,6 +11,11 @@ struct Employee {
 	char **employeeName;
 };
 
+struct EmployeeList {
+	int employeeCount;
+	struct Employee *employees;
+};
+
 struct SatisfactionLevel {
 	int id;
 	float satisfaction_level;
@@ -21,6 +26,11 @@ struct SatisfactionLevel {
 	int promotion_last_5years;
 };
 
+struct SatisfactionLevelList {
+	int satisfactionLevelCount;
+	struct SatisfactionLevel *satisfactionLevels;
+};
+
 struct Salary {
 	int id;
 	char **jobTitle;
@@ -29,6 +39,12 @@ struct Salary {
 	float benefit;
 	char **status;
 };
+
+struct SalaryList {
+	int salarycount;
+	struct Salary *salaries;
+};
+
 
 struct historyData {
 	int id;
@@ -45,5 +61,9 @@ struct historyData {
 	int work_accident;
 	int promotion_last_5years;
 };
+
+void *serverInit(char **employeeFile, char **satisfactionFile, char **salaryFile);
+
+void *clientManagerInit();
 
 #endif /* SRC_HEADER_H_ */

@@ -8,3 +8,6 @@
 
 #include "header.h"
 
+void *clientManagerInit() {
+
+}
