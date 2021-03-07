@@ -70,7 +70,7 @@ struct inputFiles {
 
 struct EmployeeList* loadEmployees(char *nameFile);
 
-void *serverInit(struct inputFiles *files);
+void *serverInit(void *files);
 
 void *clientManagerInit();
 

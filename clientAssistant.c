@@ -2,7 +2,10 @@
  * clientAssistant.c
  *
  */
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <pthread.h>
 #include <string.h>
 
 #include "header.h"
@@ -34,5 +37,6 @@ void *assistantInit(){
 		//Add the information to history file
 
 		//Print to separate terminal
-
+	//pthread_exit(NULL);
+	return NULL;
 }

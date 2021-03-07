@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <pthread.h>
+#include <string.h>
 
 #include "header.h"
 
@@ -15,6 +17,7 @@
  * 			struct EmployeeList -> struct of employees loaded from file
  */
 struct EmployeeList* loadEmployees(char *nameFile) {
+	printf("\tLoadEmployee \n");
 
 	//Let's set a max of 150000 items to read in.
 	struct Employee *employees = (struct Employee*) malloc(
@@ -36,17 +39,21 @@ struct EmployeeList* loadEmployees(char *nameFile) {
 		exit(1);
 	}
 
+	char value[100];
+	char *eptr;
 	int i = 0;
 	while (!feof(file)) {
-		//printf("Scanning row %d\n", i);
+//		printf("\tScanning row %d\n", i);
 
 		//pull new line from each file
 		fscanf(file, "%[^\n]", line);
 
 		fgetc(file);
 
-		employees[i].id = strtol(line, "\t", 10);
-		employees[i].employeeName = strtok(NULL, "\r\n");
+		strcpy(value, line);
+
+		employees[i].id = strtol(value, &eptr, 10);
+		employees[i].employeeName = eptr;
 
 		i++;
 	}
@@ -72,6 +79,7 @@ struct EmployeeList* loadEmployees(char *nameFile) {
  * 			struct SatisfactionLevelList -> struct of satisfaction levels loaded from file
  */
 struct SatisfactionLevelList* loadSatisfactionLevels(char *nameFile) {
+	printf("\tloadSatisfactionLevels \n");
 
 	//Let's set a max of 150000 items to read in.
 	struct SatisfactionLevel *satisfactionLevels = (struct SatisfactionLevel*) malloc(
@@ -95,7 +103,7 @@ struct SatisfactionLevelList* loadSatisfactionLevels(char *nameFile) {
 
 	int i = 0;
 	while (!feof(file)) {
-		//printf("Scanning row %d\n", i);
+//		printf("Scanning row %d\n", i);
 
 		//pull new line from each file
 		fscanf(file, "%[^\n]", line);
@@ -112,13 +120,13 @@ struct SatisfactionLevelList* loadSatisfactionLevels(char *nameFile) {
 //		int SL_accident = strtok(line, "\t");
 //		char *promo = strtok(NULL, "\r\n");
 
-		satisfactionLevels[i].id = strtol(line, "\t",10);
-		satisfactionLevels[i].satisfaction_level = strtol(line, "\t",10);
-		satisfactionLevels[i].number_project = strtol(line, "\t",10);
-		satisfactionLevels[i].average_monthly_hours = strtol(line, "\t",10);
-		satisfactionLevels[i].time_spend_company_in_yrs = strtol(line, "\t",10);
-		satisfactionLevels[i].work_accident = strtol(line, "\t",10);
-		satisfactionLevels[i].promotion_last_5years =  strtol(NULL, "\r\n",10);
+		satisfactionLevels[i].id = atol(strtok(line, "\t"));
+		satisfactionLevels[i].satisfaction_level = atol(strtok(line, "\t"));
+		satisfactionLevels[i].number_project = atol(strtok(line, "\t"));
+		satisfactionLevels[i].average_monthly_hours = atol(strtok(line, "\t"));
+		satisfactionLevels[i].time_spend_company_in_yrs = atol(strtok(line, "\t"));
+		satisfactionLevels[i].work_accident = atol(strtok(line, "\t"));
+		satisfactionLevels[i].promotion_last_5years =  atol(strtok(line, "\r\n"));
 
 		i++;
 	}
@@ -144,7 +152,7 @@ struct SatisfactionLevelList* loadSatisfactionLevels(char *nameFile) {
  * 			struct SalaryList -> struct of salary loaded from file
  */
 struct SalaryList* loadSalaries(char *nameFile) {
-
+	printf("\tloadSalaries \n");
 	//Let's set a max of 150000 items to read in.
 	struct Salary *salaries = (struct Salary*) malloc(
 			150000 * sizeof(struct Salary));
@@ -176,11 +184,11 @@ struct SalaryList* loadSalaries(char *nameFile) {
 
 		//Id	JobTitle	BasePay	OvertimePay	Benefit	Status
 
-		salaries[i].id = strtol(line, "\t",10);
+		salaries[i].id = atol(strtok(line, "\t"));
 		salaries[i].jobTitle = strtok(line, "\t");
-		salaries[i].basePay = strtof(line, "\t");
-		salaries[i].overtimePay = strtof(line, "\t");
-		salaries[i].benefit = strtof(line, "\t");
+		salaries[i].basePay = atof(strtok(line, "\t"));
+		salaries[i].overtimePay = atof(strtok(line, "\t"));
+		salaries[i].benefit = atof(strtok(line, "\t"));
 		salaries[i].status =  strtok(NULL, "\r\n");
 
 		i++;
@@ -204,14 +212,21 @@ struct SalaryList* loadSalaries(char *nameFile) {
 /**
  * Server Initialization
  */
-void *serverInit(struct inputFiles *files) {
-	printf("serverInit\n");
+void *serverInit(void *files) {
+	printf("\tserverInit\n");
 	//Read the 3 files or 1 excel file into memory spaces; probably just 3 text files would be easiest.
-	struct EmployeeList *employeeList = loadEmployees(files->employeeFile);
-	struct SalaryList *salaryList = loadSalaries(files->salaryFile);
-	struct SatisfactionLevelList *satisfactionLevelList = loadSatisfactionLevels(files->satisfactionFile);
+	struct EmployeeList *employeeList = loadEmployees(((struct inputFiles*) files)->employeeFile);
+	struct SatisfactionLevelList *satisfactionLevelList = loadSatisfactionLevels(((struct inputFiles*) files)->satisfactionFile);
+	struct SalaryList *salaryList = loadSalaries(((struct inputFiles*) files)->salaryFile);
+
 
 	printf("Employee List has %d records.\n", employeeList->employeeCount);
+
+	printf("Satisfaction List has %d records.\n", satisfactionLevelList->satisfactionLevelCount);
+
+	printf("Salary List has %d records.\n", salaryList->salarycount);
+
+
 
 	//loop until wanting to exit?
 
@@ -231,5 +246,6 @@ void *serverInit(struct inputFiles *files) {
 
 		//Send data back to the assistant via message queue.
 
-
+	//pthread_exit(NULL);
+	return NULL;
 }
