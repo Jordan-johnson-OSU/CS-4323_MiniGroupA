@@ -9,5 +9,6 @@
 #include "header.h"
 
 void *serverSatisfactionThread() {
+	printf("serverSatisfactionThread");
 
 }

@@ -7,8 +7,9 @@
 
 #include "header.h"
 
-struct historyData readHistoryFile(char **file){
-	return 0;
+struct historyData readHistoryFile(char **file) {
+	struct historyData *hd = (struct historyData*) malloc(sizeof(struct historyData));
+	return *hd;
 }
 
 /**
@@ -18,7 +19,8 @@ void writehistory(struct historyData *data){
 
 }
 
-void assistantInit(){
+void *assistantInit(){
+	printf("assistantInit");
 	//ReadHistoryFile
 	//IF information found:
 		//Print to separate terminal
@@ -32,4 +34,5 @@ void assistantInit(){
 		//Add the information to history file
 
 		//Print to separate terminal
+
 }

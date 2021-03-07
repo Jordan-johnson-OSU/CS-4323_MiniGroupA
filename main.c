@@ -19,6 +19,7 @@
  *
  */
 int main(int argc, char **argv) {
+	printf("Welcome to Group A's Mini Group Project");
 
 	//argv[1] = employees file
 	//argv[2] = satisfaction_level file
@@ -27,8 +28,14 @@ int main(int argc, char **argv) {
 
 	pthread_t clientThread, serverThread;
 
+	struct inputFiles *files = (struct inputFiles*) malloc(sizeof(struct inputFiles));
+	files->employeeFile = argv[1];
+	files->satisfactionFile = argv[2];
+	files->salaryFile = argv[3];
+
+
 	//Create Server Initialization
-	pthread_create(&serverThread, NULL, serverInit, argv[1],argv[2],argv[3]);
+	pthread_create(&serverThread, NULL, serverInit, (void*) files);
 
 	//Create Client Initialization
 	pthread_create(&clientThread, NULL, clientManagerInit, argv[4]);
@@ -39,7 +46,7 @@ int main(int argc, char **argv) {
 	pthread_join(clientThread, NULL);
 
 	//if the client is done...lets kill the server
-	pthread_exit(serverThread);
+	pthread_exit(&serverThread);
 
 	// exit the current thread
 	pthread_exit(NULL);

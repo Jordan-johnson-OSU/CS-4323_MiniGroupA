@@ -8,7 +8,7 @@
 
 struct Employee {
 	int id;
-	char **employeeName;
+	char *employeeName;
 };
 
 struct EmployeeList {
@@ -33,11 +33,11 @@ struct SatisfactionLevelList {
 
 struct Salary {
 	int id;
-	char **jobTitle;
+	char *jobTitle;
 	float basePay;
 	float overtimePay;
 	float benefit;
-	char **status;
+	char *status;
 };
 
 struct SalaryList {
@@ -48,12 +48,12 @@ struct SalaryList {
 
 struct historyData {
 	int id;
-	char **employeeName;
-	char **jobTitle;
+	char *employeeName;
+	char *jobTitle;
 	float basePay;
 	float overtimePay;
 	float benefit;
-	char **status;
+	char *status;
 	float satisfaction_level;
 	int number_project;
 	int average_monthly_hours;
@@ -62,7 +62,15 @@ struct historyData {
 	int promotion_last_5years;
 };
 
-void *serverInit(char **employeeFile, char **satisfactionFile, char **salaryFile);
+struct inputFiles {
+	char *employeeFile;
+	char *satisfactionFile;
+	char *salaryFile;
+};
+
+struct EmployeeList* loadEmployees(char *nameFile);
+
+void *serverInit(struct inputFiles *files);
 
 void *clientManagerInit();
 
