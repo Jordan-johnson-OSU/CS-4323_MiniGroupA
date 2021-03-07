@@ -20,7 +20,7 @@ void writehistory(struct historyData *data){
 }
 
 void *assistantInit(){
-	printf("assistantInit");
+	printf("assistantInit\n");
 	//ReadHistoryFile
 	//IF information found:
 		//Print to separate terminal

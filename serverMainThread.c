@@ -205,11 +205,13 @@ struct SalaryList* loadSalaries(char *nameFile) {
  * Server Initialization
  */
 void *serverInit(struct inputFiles *files) {
-	printf("serverInit");
+	printf("serverInit\n");
 	//Read the 3 files or 1 excel file into memory spaces; probably just 3 text files would be easiest.
 	struct EmployeeList *employeeList = loadEmployees(files->employeeFile);
 	struct SalaryList *salaryList = loadSalaries(files->salaryFile);
 	struct SatisfactionLevelList *satisfactionLevelList = loadSatisfactionLevels(files->satisfactionFile);
+
+	printf("Employee List has %d records.\n", employeeList->employeeCount);
 
 	//loop until wanting to exit?
 

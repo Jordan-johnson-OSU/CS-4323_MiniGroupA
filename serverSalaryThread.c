@@ -9,6 +9,6 @@
 #include "header.h"
 
 void *serverSalaryThread() {
-	printf("serverSalaryThread");
+	printf("serverSalaryThread\n");
 
 }

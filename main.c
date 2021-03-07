@@ -19,7 +19,7 @@
  *
  */
 int main(int argc, char **argv) {
-	printf("Welcome to Group A's Mini Group Project");
+	printf("Welcome to Group A's Mini Group Project\n");
 
 	//argv[1] = employees file
 	//argv[2] = satisfaction_level file
@@ -50,5 +50,7 @@ int main(int argc, char **argv) {
 
 	// exit the current thread
 	pthread_exit(NULL);
+
+	printf("Thanks for visiting.  Goodbye;");
 
 }
